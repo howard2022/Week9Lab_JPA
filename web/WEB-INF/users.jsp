@@ -9,47 +9,50 @@
     </head>
     <body>
         <h1>Manage Users</h1>
-        
+
         <p>
-            <c:if test="${user.email.isempty()}">No users found. Please add a user</c:if>
-        </p>
-        
+            ${Message}
+            </p>
+
             <table>
                 <tr>
-                    <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Role</th>
-                    <th> </th>
-                    <th> </th>
+                    <td>Email</td>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Role</td>
+                    <td> </td>
+                    <td> </td>
                 </tr>
             <c:forEach items="${allUsers}" var="user">
                 <tr>
                     <td>${user.email}</td>
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
-                    <c:choose>
-                        <c:when test="${user.getRole().getRoleID() == 1}">
-                            <td>system admin</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>regular user</td>
-                        </c:otherwise>
-                    </c:choose>
-                    <td><a href="user?action=edit&amp;email=${user.email}">Edit</a></td>
-                    <td><a href="user?action=delete&amp;email=${user.email}">Delete</a></td>
+                    <td>${user.role.roleName}</td>
+                    <td>
+                        <a href="<c:url value='/users?action=edit&amp;'>
+                           <c:param name='email' value='${user.email}'/>  
+                           </c:url>">Edit
+                        </a>
+                    </td> 
+                    <td>                            
+                        <a href="<c:url value='/users?action=delete&amp;'>
+                           <c:param name='email' value='${user.email}'/>  
+                           </c:url>">Delete
+                        </a>
+                    </td>
                 </tr>
             </c:forEach>
-            </table>
+        </table>
 
-        
+
         <c:if test="${selectedUser eq null}">
             <h2>Add User</h2>
-            <form action="" method="post">
+            <form action="users" method="post">
                 Email: <input type="text" name="email" value="${email}"><br>
                 First name: <input type="text" name="firstName" value="${firstName}"><br>
                 Last name: <input type="text" name="lastName" value="${lastName}"><br>
-                Password: <input type="password" name="password" value=""><br>
+                Password: <input type="password" name="password" value="${password}"><br>
                 Role<select name = "role">
                     <option value="1">system admin</option>
                     <option value="2">regular user</option>
@@ -59,7 +62,7 @@
                 <input type="submit" value="Add user">
             </form>
         </c:if>
-            
+
         <c:if test="${selectedUser ne null}">
             <h2>Edit User</h2>
             <form action="users" method="post">
@@ -74,9 +77,9 @@
                 <br>
                 <input type="hidden" name="action" value="update">
                 <input type="submit" value="Update">
-                <input type="hidden" name="action" value="cancel">
-                <input type="submit" value="Cancel">
             </form>
+            <a href="users">cancel</a>
+
         </c:if>
     </body>
 </html>

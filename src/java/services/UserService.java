@@ -39,6 +39,7 @@ public class UserService {
         User user = userdb.get(email);
         user.setFirstName(firstname);
         user.setLastName(lastname);
+        user.setPassword(password);
         user.setRole(role);
         userdb.update(user);
     }
